@@ -1,6 +1,12 @@
-import './style.css';
-import appRouter from './appRouter'
+import app from './app'
+import './style.css'
 
 document.addEventListener("DOMContentLoaded", () => {
-  appRouter.initController()
+  app.init()
 })
+
+if (module.hot) {
+  module.hot.accept("./app", async () => {
+    app.init()
+  })
+}
