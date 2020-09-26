@@ -10,11 +10,11 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename:'./index.html'
+      filename: './index.html'
     }),
     new MiniCssExtractPlugin()
   ],
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   devServer: {
     hot: true,
     overlay: true, // 빌드시 에러나 경고를 브라우져 화면에 표시한다.

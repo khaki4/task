@@ -1,20 +1,32 @@
-import model from "./model"
+const { model, gameScore } = require('../shared/model');
 import view from "./view"
 import appRouter from '../appRouter';
 
+const initialViewStateFactory = () => ({
+});
+
 class Controller {
+  get state() {
+    return this.viewState
+  }
+
+  constructor() {
+    this.viewState = initialViewStateFactory();
+  }
   async init(el) {
     this.el = el
-    view.render(model.get(), this.el)
-    document.querySelector('#test2').addEventListener('click', this.goHome.bind(this));
+    view.render(this.state, this.el)
+    document.querySelector('#complete').addEventListener('click', this.goHome.bind(this));
+
+    console.log(gameScore.consumedAverageTime)
   }
 
   goHome() {
-    window.history.pushState({ res: 1 }, 'home', `/`);
+    window.history.pushState({ }, 'Typing Game', `/`);
     appRouter.router(this.onDestroy())
   }
   async onDestroy() {
-    document.querySelector('#test2').removeEventListener('click', this.goHome.bind(this));
+    document.querySelector('#complete').removeEventListener('click', this.goHome.bind(this));
   }
 }
 

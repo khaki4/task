@@ -1,5 +1,4 @@
-const { wordData, gameScore, WordItemQueue } = require("./model")
-const { Clock } = require('../shared/Clock')
+const { wordData, gameScore, WordItemQueue, Clock } = require("../shared/model")
 const { timeLeftToString } = require('../shared/timeFormat')
 const { INTERVAL_TIME, ENTER_KEY_CODE } = require('../shared/constant')
 const view = require("./view")
@@ -48,7 +47,8 @@ class Controller {
   async setWordData() {
     // this._wordQueue = new WordItemQueue(await this._getDataFn(), Clock);
     // TODO:
-    this._wordQueue = new WordItemQueue((await this._getDataFn()).slice(0, 4), Clock);
+    this._wordQueue = new WordItemQueue((await this._getDataFn()).slice(0, 2), Clock);
+    gameScore.setWordItems(this._wordQueue)
   }
 
   _goResult() {
@@ -106,18 +106,13 @@ class Controller {
     document.getElementById('word-input').focus();
   }
 
-  _setNext(isInit = false, isCurrect = true) {
+  _setNext() {
     if (this._wordQueue.size === 0) {
       this._goResult()
       return
     }
-
-    if (!isInit) {
-      this.viewState.totalScore = this.viewState.totalScore + (isCurrect ? 1 : -1)
-      gameScore.totall = this.viewState.totalScore
-    }
-
-    this._currentWordItem = this._wordQueue.get()
+    this.viewState.totalScore = gameScore.totall;
+    this._currentWordItem = this._wordQueue.dequeue()
     const { text, second } = this._currentWordItem.value
     this.viewState.wordForScreen = text;
     this.viewState.timeLeft = second;
@@ -132,7 +127,7 @@ class Controller {
 
   _updateTimeLeft() {
     if (this._currentWordItem.isExpired) {
-      this._setNext(false, false)
+      this._setNext()
     } else {
       const { second } = this._currentWordItem.value
       document.querySelector('.time-left').innerText = timeLeftToString(second);
@@ -144,6 +139,8 @@ class Controller {
     event.preventDefault();
 
     const isCurrectWord = this._currentWordItem.compareWith(event.target.value)
+    this._currentWordItem.pass(isCurrectWord)
+
     if (isCurrectWord) {
       this._setNext()
     } else {
@@ -161,7 +158,7 @@ class Controller {
   async _startGame() {
     await this.setWordData()
     this.viewState.startButtonStatus = false
-    this._setNext(true)
+    this._setNext()
     INTERVAL_FLAG = setInterval(() => {
       this._updateTimeLeft()
     }, INTERVAL_TIME)

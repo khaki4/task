@@ -1,6 +1,6 @@
 class View {
   render(data, el) {
-    el.innerHTML = `<button id="test2">go homdde</button>`
+    el.innerHTML = `<button id="complete">go homdde</button>`
   }
 }
 
