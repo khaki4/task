@@ -18,6 +18,10 @@ module.exports = {
   devServer: {
     hot: true,
     overlay: true, // 빌드시 에러나 경고를 브라우져 화면에 표시한다.
+    contentBase: "./public",
+    inline: true,
+    disableHostCheck: true,
+    historyApiFallback: true
   },
   output: {
     filename: 'main.js',
@@ -26,8 +30,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,

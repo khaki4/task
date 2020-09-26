@@ -4,9 +4,18 @@ class Model {
   async get() {
     const res = await fetch(URI)
     const jsonData = await res.json()
-    console.log(JSON.stringify(jsonData))
+
     return jsonData
   }
 }
+
+class WordItem {
+  constructor({ time, text }) {
+    this.time = time
+    this.text = text
+  }
+}
+
+
 
 export default new Model()

@@ -5,8 +5,3 @@ document.addEventListener("DOMContentLoaded", () => {
   app.init()
 })
 
-if (module.hot) {
-  module.hot.accept("./app", async () => {
-    app.init()
-  })
-}

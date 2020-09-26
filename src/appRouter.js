@@ -1,4 +1,4 @@
-import controller from './page1/controller';
+import controller from './home/controller';
 import * as controller2 from './page2/controller';
 
 const appRouter = {
