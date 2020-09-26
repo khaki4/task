@@ -13,7 +13,7 @@ const initialViewStateFactory = () => ({
   wordForScreen: '문제 단어', // 입력 대상 단어
   wordInput: '입력', // 입력된 단어
   startButtonStatus: true
-})
+});
 
 class Controller {
   get state() {
@@ -23,10 +23,12 @@ class Controller {
   constructor(getDataFn) {
     this._getDataFn = getDataFn;
     this.viewState = initialViewStateFactory();
-    this.bindEventHander();
+    this._root = document.getElementById('root')
+    this._bindEventHander();
+    this._eventInfos = [['click', this._clickHandler], ['input', this._inputHandler], ['keyup', this._keyUpHandler]];
   }
 
-  bindEventHander() {
+  _bindEventHander() {
     this._clickHandler = this._clickHandler.bind(this)
     this._inputHandler = this._inputHandler.bind(this)
     this._keyUpHandler = this._keyUpHandler.bind(this)
@@ -38,7 +40,7 @@ class Controller {
     this._addEventDelegation()
   }
 
-  onDestroy() {
+  async onDestroy() {
     clearInterval(INTERVAL_FLAG)
     this._removeEventDelegation()
   }
@@ -46,7 +48,7 @@ class Controller {
   async setWordData() {
     // this._wordQueue = new WordItemQueue(await this._getDataFn(), Clock);
     // TODO:
-    this._wordQueue = new WordItemQueue((await this._getDataFn()).slice(0, 1), Clock);
+    this._wordQueue = new WordItemQueue((await this._getDataFn()).slice(0, 4), Clock);
   }
 
   _goResult() {
@@ -89,17 +91,15 @@ class Controller {
   }
 
   _addEventDelegation() {
-    const root = document.getElementById('root')
-    root.addEventListener('click', this._clickHandler);
-    root.addEventListener('input', this._inputHandler);
-    root.addEventListener('keyup', this._keyUpHandler);
+    this._eventInfos.forEach(([type, handler]) => {
+      this._root.addEventListener(type, handler)
+    });
   }
 
   _removeEventDelegation() {
-    const root = document.getElementById('root');
-    root.removeEventListener('click', this._clickHandler);
-    root.removeEventListener('input', this._inputHandler);
-    root.removeEventListener('keyup', this._keyUpHandler);
+    this._eventInfos.forEach(([type, handler]) => {
+      this._root.removeEventListener(type, handler)
+    });
   }
 
   _focusWordInput() {
@@ -125,7 +125,7 @@ class Controller {
     this._updateState()
   }
 
-  _updateState() {
+  async _updateState() {
     view.render(this.viewState, this.el);
     this._focusWordInput()
   }
