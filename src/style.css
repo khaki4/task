@@ -1,3 +1,20 @@
-#test {
-    color: green;
+#home {
+    width: 400px;
+    margin: 100px auto 0;
+    text-align: center;
+}
+
+#home .top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#home .word-screen {
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#home #word-input {
+    margin: 0 0 10px;
 }

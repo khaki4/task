@@ -1,5 +1,5 @@
 import controller from './home/controller';
-import * as controller2 from './page2/controller';
+import * as controller2 from './complete/controller';
 
 const appRouter = {
   initController: () => {
@@ -12,7 +12,7 @@ const appRouter = {
 }
 const routerMap = {
   '' : appRouter.initController,
-  'result': appRouter.initController2
+  'complete': appRouter.initController2
 }
 
 export default appRouter
