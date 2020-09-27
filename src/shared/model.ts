@@ -57,13 +57,13 @@ export class WordItem {
     return this.clockForLeftTime.timeLeft
   }
 
-  constructor({ second, text }, private Clock) {
-    this.init = this.lazyInit(second, text, Clock);
+  constructor({ second, text }) {
+    this.init = this.lazyInit(second, text);
     this.init();
   }
 
   start() {
-    this.clockForLeftTime = new this.Clock(this.second)
+    this.clockForLeftTime = new Clock(this.second)
   }
 
   compareWith(inputWord = '') {
@@ -79,13 +79,12 @@ export class WordItem {
     this.init();
   }
 
-  private lazyInit(second: number, text: string, Clock: Clock) {
+  private lazyInit(second: number, text: string) {
     return () => {
       this.second = second
       this.text = text
       this.timeConsumed = 0
       this.isPassed = void 0
-      this.Clock = Clock
       this.clockForLeftTime = void 0
     }
   }
@@ -103,8 +102,8 @@ export class WordItemQueue {
     return this.wordItems;
   }
 
-  constructor(wordItems = [], Clock) {
-    this.wordItems = wordItems.map(v => new WordItem(v, Clock));
+  constructor(wordItems = []) {
+    this.wordItems = wordItems.map(v => new WordItem(v));
     this.currentIdx = 0
   }
 
@@ -148,7 +147,7 @@ class GameScore {
   }
 
   constructor() {
-    this.wordItemQueue = new WordItemQueue(void 0, Clock);
+    this.wordItemQueue = new WordItemQueue(void 0);
   }
 
   setWordItems(wordItemQueue) {

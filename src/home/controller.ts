@@ -48,7 +48,7 @@ class Controller {
   }
 
   private async setWordData() {
-    this.wordQueue = new WordItemQueue(await this.getDataFn(), Clock);
+    this.wordQueue = new WordItemQueue(await this.getDataFn());
     gameScore.setWordItems(this.wordQueue)
   }
 
