@@ -2,7 +2,7 @@ import homeCtroller from './home/controller'
 import completeController from './complete/controller'
 
 class AppRouter {
-  route() {
+  route(_) {
     switch (location.pathname.slice(1)) {
       case '':
         homeCtroller.init(document.querySelector("#root"))

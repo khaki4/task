@@ -4,4 +4,3 @@ import './style.css'
 document.addEventListener("DOMContentLoaded", () => {
   app.init()
 })
-

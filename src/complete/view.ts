@@ -12,4 +12,4 @@ class View {
   }
 }
 
-module.exports = new View()
+export default new View()

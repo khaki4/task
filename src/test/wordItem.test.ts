@@ -1,4 +1,4 @@
-const { WordItem, Clock } = require('../shared/model');
+import { WordItem, Clock } from '../shared/model'
 
 const sleep = seconds => new Promise(res => setTimeout(() => res(), seconds * 1000));
 
@@ -50,10 +50,12 @@ describe('WordItem 에서', () => {
 
   test('정답을 맞출 때 까지 사용된 시간을 올바르게 저장해야한다.', async () => {
     const wordItem = new WordItem({ text: 'world', second: 4 }, Clock)
-    wordItem.start()
-    await sleep(2)
-    wordItem.pass()
-    expect(wordItem.value.timeConsumed).toBeLessThan(4)
+    if (wordItem instanceof WordItem) {
+      wordItem.start()
+      await sleep(2)
+      wordItem.pass(true)
+      expect(wordItem.value.timeConsumed).toBeLessThan(4)
+    }
   })
 
   test('reset 했을때 초기화 되어야 한다.', async () => {

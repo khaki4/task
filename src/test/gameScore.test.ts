@@ -1,4 +1,4 @@
-const { gameScore, Clock, WordItemQueue } = require('../shared/model');
+import {gameScore, Clock, WordItemQueue, WordItem} from '../shared/model'
 
 const sleep = seconds => new Promise(res => setTimeout(() => res(), seconds * 1000));
 
@@ -17,8 +17,10 @@ describe('GameScore 에서', () => {
       gameScore.setWordItems(wordItemQueue);
       while (wordItemQueue.size > 0) {
         const wordItem = wordItemQueue.dequeue()
-        wordItem.start()
-        wordItem.pass(true)
+        if (wordItem instanceof WordItem) {
+          wordItem.start()
+          wordItem.pass(true)
+        }
       }
       expect(gameScore.consumedAverageTime).toEqual(void 0);
     })
@@ -29,9 +31,11 @@ describe('GameScore 에서', () => {
       gameScore.setWordItems(wordItemQueue);
       while (wordItemQueue.size > 0) {
         const wordItem = wordItemQueue.dequeue()
-        wordItem.start()
-        await sleep(2)
-        wordItem.pass(true)
+        if (wordItem instanceof WordItem) {
+          wordItem.start()
+          await sleep(2)
+          wordItem.pass(true)
+        }
       }
       expect(gameScore.consumedAverageTime).toBeGreaterThan(1);
     })
@@ -42,8 +46,10 @@ describe('GameScore 에서', () => {
       gameScore.setWordItems(wordItemQueue);
       while (wordItemQueue.size > 0) {
         const wordItem = wordItemQueue.dequeue()
-        wordItem.start()
-        wordItem.pass(false)
+        if (wordItem instanceof WordItem) {
+          wordItem.start()
+          wordItem.pass(false)
+        }
       }
       expect(gameScore.consumedAverageTime).toEqual(void 0);
     })
@@ -53,9 +59,11 @@ describe('GameScore 에서', () => {
       const wordItemQueue = new WordItemQueue(wordData, Clock);
       gameScore.setWordItems(wordItemQueue);
       const wordItem = wordItemQueue.dequeue()
-      wordItem.start()
-      await sleep(2)
-      wordItem.pass(true)
+      if (wordItem instanceof WordItem) {
+        wordItem.start()
+        await sleep(2)
+        wordItem.pass(true)
+      }
       expect(gameScore.consumedAverageTime).toBeGreaterThan(1);
     })
 
@@ -65,13 +73,19 @@ describe('GameScore 에서', () => {
     const wordData = [{ text: 'hello', second: 10 }, { text: 'world', second: 11 }];
     const wordItemQueue = new WordItemQueue(wordData, Clock);
     gameScore.setWordItems(wordItemQueue);
-    wordItemQueue.dequeue().pass(true);
+    const wordItem1 = wordItemQueue.dequeue()
+    if (wordItem1 instanceof WordItem) {
+      wordItem1.pass(true);
+    }
 
     expect(gameScore.total).toEqual(1)
     gameScore.clear();
     expect(gameScore.total).toEqual(0)
 
-    wordItemQueue.dequeue().pass(false);
+    const wordItem2 = wordItemQueue.dequeue()
+    if (wordItem2 instanceof WordItem) {
+      wordItem2.pass(false);
+    }
     expect(gameScore.total).toEqual(-1)
   })
 

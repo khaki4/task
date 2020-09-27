@@ -1,8 +1,8 @@
-const { timeLeftToString } = require('../shared/timeFormat')
+const {timeLeftToString} = require('../shared/timeFormat')
 
 class View {
   render(state, el) {
-    const { timeLeft, totalScore, wordForScreen, startButtonStatus } = state
+    const {timeLeft, totalScore, wordForScreen, startButtonStatus} = state
     el.innerHTML = `
       <div id="home">
         <div class="top">
@@ -12,14 +12,14 @@ class View {
         <div class="word-screen"><span>${wordForScreen}</span></div>
         <input id="wordInput" type="text" placeholder="단어입력" />
         <div>
-            ${startButtonStatus 
-                ? '<button type="button" id="start">시작</button>'
-                : '<button type="button" id="reset">초기화</button>'
-              }
+            ${startButtonStatus
+      ? '<button type="button" id="start">시작</button>'
+      : '<button type="button" id="reset">초기화</button>'
+    }
         </div>
       </div>
     `
   }
 }
 
-module.exports = new View()
+export default new View()

@@ -1,4 +1,4 @@
-const { WordItemQueue, Clock, WordItem } = require('../shared/model');
+import { WordItemQueue, Clock, WordItem } from '../shared/model'
 
 describe('WordItemQueue 에서', () => {
   test('get()이 올바른 값을 리턴해야 한다.', () => {
