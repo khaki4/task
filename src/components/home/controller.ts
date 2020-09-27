@@ -5,8 +5,8 @@ import view from "./view";
 import appRouter from "../../appRouter";
 import { WordItem } from "../../shared/models/WordItem";
 import { WordItemQueue } from "../../shared/models/WordItemQueue";
-import { gameStat } from "../../shared/models/GameStat";
-import { wordData } from "../../shared/models/WordData";
+import { gameStatService } from "../../shared/services/GameStat.service";
+import { wordDataService } from "../../shared/services/WordData.service";
 
 const initialViewStateFactory = (totalScore?: number) => ({
   timeLeft: void 0, // 남은 시간
@@ -34,7 +34,7 @@ class Controller {
 
   async init(el) {
     this.el = el;
-    this.viewState = initialViewStateFactory(gameStat.total);
+    this.viewState = initialViewStateFactory(gameStatService.total);
     view.render(this.viewState, this.el);
     this.addEventDelegation();
   }
@@ -55,10 +55,10 @@ class Controller {
 
   private async setWordData() {
     this.wordQueue = new WordItemQueue(await this.getDataFn());
-    gameStat.setWordItems(this.wordQueue);
+    gameStatService.setWordItems(this.wordQueue);
   }
 
-  private goResult() {
+  private async goResult() {
     window.history.pushState(void 0, "Mission Complete", `/complete`);
     appRouter.route(this.onDestroy());
   }
@@ -119,7 +119,7 @@ class Controller {
       this.goResult();
       return;
     }
-    this.viewState.totalScore = gameStat.total;
+    this.viewState.totalScore = gameStatService.total;
     this.currentWordItem = this.wordQueue.dequeue();
     const { text, second } = this.currentWordItem.value;
     this.viewState.wordForScreen = text;
@@ -135,7 +135,7 @@ class Controller {
     this.focusWordInput();
   }
 
-  private updateTimeLeft() {
+  private async updateTimeLeft() {
     if (!(this.currentWordItem instanceof WordItem)) return;
 
     if (this.currentWordItem.isExpired) {
@@ -143,9 +143,10 @@ class Controller {
       this.setNext();
     } else {
       const { second } = this.currentWordItem.value;
-      (<HTMLElement>(
-        document.querySelector(".time-left")
-      )).innerText = timeLeftToString(second);
+      const timeLeftEl: HTMLElement = document.querySelector(".time-left");
+      if (!timeLeftEl) return;
+
+      timeLeftEl.innerText = timeLeftToString(second);
     }
   }
 
@@ -173,14 +174,14 @@ class Controller {
   }
 
   private async resetGame() {
-    gameStat.clear();
+    gameStatService.clear();
     this.viewState = initialViewStateFactory();
     this.internalInterval.clear();
     this.updateState();
   }
 }
 
-const controller = new Controller(wordData.get);
+const controller = new Controller(wordDataService.get);
 export default controller;
 
 if (module.hot) {

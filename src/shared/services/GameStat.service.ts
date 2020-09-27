@@ -1,6 +1,6 @@
-import { WordItemQueue } from "./WordItemQueue";
+import { WordItemQueue } from "../models/WordItemQueue";
 
-export class GameStat {
+export class GameStatService {
   private wordItemQueue: WordItemQueue;
 
   get total() {
@@ -50,4 +50,4 @@ export class GameStat {
   }
 }
 
-export const gameStat = new GameStat();
+export const gameStatService = new GameStatService();

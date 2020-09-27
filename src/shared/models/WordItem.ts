@@ -46,7 +46,7 @@ export class WordItem {
     return this.text === inputWord.trim();
   }
 
-  pass(isPass) {
+  pass(isPass: boolean | undefined) {
     this.isPassed = isPass;
     this.timeConsumed = this.second - this.timeLeft;
   }

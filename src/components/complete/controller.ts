@@ -1,6 +1,6 @@
 import view from "./view";
 import appRouter from "../../appRouter";
-import { gameStat } from "../../shared/models/GameStat";
+import { gameStatService } from "../../shared/services/GameStat.service";
 
 const initialViewStateFactory = (gameStat) => ({
   totalScore: gameStat.total,
@@ -8,7 +8,7 @@ const initialViewStateFactory = (gameStat) => ({
 });
 
 class Controller {
-  viewState = initialViewStateFactory(gameStat);
+  viewState = initialViewStateFactory(gameStatService);
   el: HTMLElement;
 
   private root = document.getElementById("root");
@@ -22,7 +22,7 @@ class Controller {
     if (!this.validPageToStart()) return;
 
     this.el = el;
-    this.viewState = initialViewStateFactory(gameStat);
+    this.viewState = initialViewStateFactory(gameStatService);
     view.render(this.viewState, this.el);
     this.addEventDelegation();
   }
@@ -32,7 +32,7 @@ class Controller {
   }
 
   private validPageToStart() {
-    if (gameStat.isFinished) {
+    if (gameStatService.isFinished) {
       return true;
     } else {
       window.location.href = "/";
@@ -63,11 +63,11 @@ class Controller {
   };
 
   private async reStartGame() {
-    gameStat.clear();
+    gameStatService.clear();
     this.goHome();
   }
 
-  private goHome() {
+  private async goHome() {
     window.history.pushState(void 0, "Typing Game", `/`);
     appRouter.route(this.onDestroy());
   }
