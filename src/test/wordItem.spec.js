@@ -5,7 +5,7 @@ const sleep = seconds => new Promise(res => setTimeout(() => res(), seconds * 10
 describe('WordItem 에서', () => {
   test('단어 설정이 올바르게 되어야 한다.', () => {
     const wordItem = new WordItem({ text: 'world', second: 10 }, Clock)
-    expect(wordItem.value).toEqual({ text: 'world', second: 10, timeUsed: 0, isPassed: false });
+    expect(wordItem.value).toEqual({ text: 'world', second: 10, isPassed: void 0, timeConsumed: 0});
   })
 
   test('지정된 시간이 지나면 유효하지 않은 word로 판정되야 한다.', async () => {
@@ -62,6 +62,6 @@ describe('WordItem 에서', () => {
     await sleep(2)
     expect(wordItem.value.second).toBeLessThan(4);
     wordItem.reset();
-    expect(wordItem.value).toEqual({ text: 'world', second: 4, timeUsed: 0, isPassed: false });
+    expect(wordItem.value).toEqual({ text: 'world', second: 4, timeConsumed: 0, isPassed: void 0});
   })
 });

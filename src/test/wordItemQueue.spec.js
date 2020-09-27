@@ -1,11 +1,11 @@
-const { WordItemQueue, Clock } = require('../shared/model');
+const { WordItemQueue, Clock, WordItem } = require('../shared/model');
 
 describe('WordItemQueue 에서', () => {
   test('get()이 올바른 값을 리턴해야 한다.', () => {
     const wordData = [{ text: 'hello', second: 10 }, { text: 'world', second: 11 }];
     const wordItemQueue = new WordItemQueue(wordData, Clock)
-    expect(wordItemQueue.dequeue().value).toEqual({ text: 'hello', second: 10 });
-    expect(wordItemQueue.dequeue().value).toEqual({ text: 'world', second: 11 });
+    expect(wordItemQueue.dequeue().value).toEqual(new WordItem({ text: 'hello', second: 10 }, Clock).value);
+    expect(wordItemQueue.dequeue().value).toEqual(new WordItem({ text: 'world', second: 11 }, Clock).value);
     expect(wordItemQueue.dequeue().value).toEqual(null);
   })
 
