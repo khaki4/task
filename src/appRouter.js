@@ -1,18 +1,19 @@
-import controller from './home/controller';
-import * as controller2 from './complete/controller';
+import homeCtroller from './home/controller'
+import completeController from './complete/controller'
 
-const appRouter = {
-  initController: () => {
-    controller.init(document.querySelector("#root"))
-  },
-  initController2: () => controller2.default.init(document.querySelector("#root")),
-  router: () => {
-    (routerMap[location.pathname.slice(1)])();
+class AppRouter {
+  route() {
+    switch (location.pathname.slice(1)) {
+      case '':
+        homeCtroller.init(document.querySelector("#root"))
+        break
+      case 'complete':
+        completeController.init(document.querySelector("#root"))
+        break
+      default:
+        homeCtroller.init(document.querySelector("#root"))
+    }
   }
 }
-const routerMap = {
-  '' : appRouter.initController,
-  'complete': appRouter.initController2
-}
 
-export default appRouter
+export default new AppRouter()

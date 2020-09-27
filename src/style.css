@@ -16,7 +16,7 @@
     font-size: 30px;
 }
 
-#home #word-input {
+#home #wordInput {
     margin: 0 0 10px;
 }
 
@@ -26,3 +26,19 @@
     margin: 100px auto 0;
     text-align: center;
 }
+
+#complete h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#complete .total-score {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#complete .consumed-time {
+    font-size: 14px;
+}
+
+

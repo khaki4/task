@@ -2,7 +2,7 @@ import appRouter from './appRouter';
 
 class App {
   async init() {
-    appRouter.router()
+    appRouter.route()
   }
 }
 

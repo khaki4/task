@@ -6,11 +6,11 @@ class View {
     el.innerHTML = `
       <div id="home">
         <div class="top">
-            <div class="time-left">${timeLeftToString(timeLeft)}</div>
-            <div class="score">점수: ${totalScore}점</div>
+            <span class="time-left">${timeLeftToString(timeLeft)}</span>
+            <span class="score">점수: ${totalScore || 0}점</span>
         </div>
-        <div class="word-screen">${wordForScreen}</div>
-        <input id="word-input" type="text" placeholder="단어입력" />
+        <div class="word-screen"><span>${wordForScreen}</span></div>
+        <input id="wordInput" type="text" placeholder="단어입력" />
         <div>
             ${startButtonStatus 
                 ? '<button type="button" id="start">시작</button>'

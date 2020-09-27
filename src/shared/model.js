@@ -106,7 +106,7 @@ class WordItemQueue {
 }
 
 class GameScore {
-  get totall() {
+  get total() {
     return this._wordItemQueue.list
       .reduce((tally, curr) => {
         if (curr.value.isPassed === undefined) {
@@ -119,12 +119,19 @@ class GameScore {
   }
 
   get consumedAverageTime() {
-    return this._wordItemQueue.list
-      .filter(item => item.value.isPassed)
+    const sucessList = this._wordItemQueue.list
+      .filter(item => item.value.isPassed);
+
+    if (sucessList.length === 0) return void 0
+
+    const sumOfConsumedTime = sucessList
+      .map(item => item.value.timeConsumed)
       .reduce((tally, curr) => {
-        tally.push([curr.value.timeConsumed, curr.wholeTime]);
+        tally += curr;
         return tally;
-      }, []);
+      }, 0)
+
+    return Math.round(sumOfConsumedTime / sucessList.length);
   }
 
   constructor() {

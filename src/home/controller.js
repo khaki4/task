@@ -6,19 +6,15 @@ import appRouter from '../appRouter';
 
 let INTERVAL_FLAG = null;
 
-const initialViewStateFactory = () => ({
+const initialViewStateFactory = (totalScore) => ({
   timeLeft: void 0, // 남은 시간
-  totalScore: gameScore.totall, // 총 점수
+  totalScore, // 총 점수
   wordForScreen: '문제 단어', // 입력 대상 단어
   wordInput: '입력', // 입력된 단어
   startButtonStatus: true
 });
 
 class Controller {
-  get state() {
-    return this.viewState
-  }
-
   constructor(getDataFn) {
     this._getDataFn = getDataFn;
     this.viewState = initialViewStateFactory();
@@ -27,15 +23,10 @@ class Controller {
     this._eventInfos = [['click', this._clickHandler], ['input', this._inputHandler], ['keyup', this._keyUpHandler]];
   }
 
-  _bindEventHander() {
-    this._clickHandler = this._clickHandler.bind(this)
-    this._inputHandler = this._inputHandler.bind(this)
-    this._keyUpHandler = this._keyUpHandler.bind(this)
-  }
-
   async init(el) {
     this.el = el;
-    view.render(this.state, this.el);
+    this.viewState = initialViewStateFactory(gameScore.total);
+    view.render(this.viewState, this.el);
     this._addEventDelegation()
   }
 
@@ -44,16 +35,31 @@ class Controller {
     this._removeEventDelegation()
   }
 
+  async _startGame() {
+    await this.setWordData()
+    this.viewState.startButtonStatus = false
+    this._setNext()
+    INTERVAL_FLAG = setInterval(() => {
+      this._updateTimeLeft()
+    }, INTERVAL_TIME)
+  }
+
   async setWordData() {
     // this._wordQueue = new WordItemQueue(await this._getDataFn(), Clock);
     // TODO:
-    this._wordQueue = new WordItemQueue((await this._getDataFn()).slice(0, 2), Clock);
+    this._wordQueue = new WordItemQueue((await this._getDataFn()).slice(6, 8), Clock);
     gameScore.setWordItems(this._wordQueue)
   }
 
-  _goResult() {
+  _bindEventHander() {
+    this._clickHandler = this._clickHandler.bind(this)
+    this._inputHandler = this._inputHandler.bind(this)
+    this._keyUpHandler = this._keyUpHandler.bind(this)
+  }
+
+  async _goResult() {
     window.history.pushState({}, 'Mission Complete', `/complete`);
-    appRouter.router(this.onDestroy());
+    appRouter.route(this.onDestroy());
   }
 
   _clickHandler(event) {
@@ -71,9 +77,9 @@ class Controller {
 
   _inputHandler(event) {
     switch (event.target.id) {
-      case 'word-input':
+      case 'wordInput':
         this.viewState.wordInput = event.target.value
-        document.getElementById('word-input').value = this.viewState.wordInput
+        document.getElementById('wordInput').value = this.viewState.wordInput
         break;
       default:
         return false;
@@ -82,7 +88,7 @@ class Controller {
 
   _keyUpHandler(event) {
     switch (event.target.id) {
-      case 'word-input':
+      case 'wordInput':
         this._onSubmitWord(event)
         break;
       default:
@@ -103,7 +109,7 @@ class Controller {
   }
 
   _focusWordInput() {
-    document.getElementById('word-input').focus();
+    document.getElementById('wordInput').focus();
   }
 
   _setNext() {
@@ -111,7 +117,7 @@ class Controller {
       this._goResult()
       return
     }
-    this.viewState.totalScore = gameScore.totall;
+    this.viewState.totalScore = gameScore.total;
     this._currentWordItem = this._wordQueue.dequeue()
     const { text, second } = this._currentWordItem.value
     this.viewState.wordForScreen = text;
@@ -125,8 +131,9 @@ class Controller {
     this._focusWordInput()
   }
 
-  _updateTimeLeft() {
+  async _updateTimeLeft() {
     if (this._currentWordItem.isExpired) {
+      this._currentWordItem.pass(false)
       this._setNext()
     } else {
       const { second } = this._currentWordItem.value
@@ -134,7 +141,7 @@ class Controller {
     }
   }
 
-  _onSubmitWord(event) {
+  async _onSubmitWord(event) {
     if (event.keyCode !== ENTER_KEY_CODE) return false
     event.preventDefault();
 
@@ -148,23 +155,14 @@ class Controller {
     }
   }
 
-  _clearWordItem() {
-    this.state.wordInput = ''
+  async _clearWordItem() {
+    this.viewState.wordInput = ''
     const { second } = this._currentWordItem.value
     this.viewState.timeLeft = second
     this._updateState()
   }
 
-  async _startGame() {
-    await this.setWordData()
-    this.viewState.startButtonStatus = false
-    this._setNext()
-    INTERVAL_FLAG = setInterval(() => {
-      this._updateTimeLeft()
-    }, INTERVAL_TIME)
-  }
-
-  _resetGame() {
+  async _resetGame() {
     gameScore.clear();
     this.viewState = initialViewStateFactory();
     clearInterval(INTERVAL_FLAG)
@@ -177,6 +175,6 @@ export default controller
 
 if (module.hot) {
   module.hot.accept("./view", async () => {
-    view.render(controller.state, controller.el)
+    view.render(controller.viewState, controller.el)
   })
 }
