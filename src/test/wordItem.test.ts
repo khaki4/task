@@ -1,4 +1,4 @@
-import { WordItem, Clock } from "../shared/model";
+import { WordItem } from "../shared/models/WordItem";
 
 const sleep = (seconds) =>
   new Promise((res) => setTimeout(() => res(), seconds * 1000));

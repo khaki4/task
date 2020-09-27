@@ -1,4 +1,5 @@
-import { WordItemQueue, WordItem } from "../shared/model";
+import { WordItem } from "../shared/models/WordItem";
+import { WordItemQueue } from "../shared/models/WordItemQueue";
 
 describe("WordItemQueue 에서", () => {
   test("get()이 올바른 값을 리턴해야 한다.", () => {

@@ -1,4 +1,4 @@
-import { timeLeftToString } from "../shared/timeFormat";
+import { timeLeftToString } from "../shared/utils/timeFormat";
 
 describe("timeLeftToString 에서", () => {
   test("올바른 format이 이뤄져야한다.", () => {

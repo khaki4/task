@@ -1,14 +1,14 @@
-import { gameScore } from "../../shared/model";
 import view from "./view";
 import appRouter from "../../appRouter";
+import { gameStat } from "../../shared/models/GameStat";
 
-const initialViewStateFactory = (gameScore) => ({
-  totalScore: gameScore.total,
-  consumedAverageTime: gameScore.consumedAverageTime,
+const initialViewStateFactory = (gameStat) => ({
+  totalScore: gameStat.total,
+  consumedAverageTime: gameStat.consumedAverageTime,
 });
 
 class Controller {
-  viewState = initialViewStateFactory(gameScore);
+  viewState = initialViewStateFactory(gameStat);
   el: HTMLElement;
 
   private root = document.getElementById("root");
@@ -19,14 +19,25 @@ class Controller {
   constructor() {}
 
   async init(el) {
+    if (!this.validPageToStart()) return;
+
     this.el = el;
-    this.viewState = initialViewStateFactory(gameScore);
+    this.viewState = initialViewStateFactory(gameStat);
     view.render(this.viewState, this.el);
     this.addEventDelegation();
   }
 
   async onDestroy() {
     this.removeEventDelegation();
+  }
+
+  private validPageToStart() {
+    if (gameStat.isFinished) {
+      return true;
+    } else {
+      window.location.href = "/";
+      return false;
+    }
   }
 
   private addEventDelegation() {
@@ -52,12 +63,12 @@ class Controller {
   };
 
   private async reStartGame() {
-    gameScore.clear();
+    gameStat.clear();
     this.goHome();
   }
 
-  private async goHome() {
-    window.history.pushState({}, "Typing Game", `/`);
+  private goHome() {
+    window.history.pushState(void 0, "Typing Game", `/`);
     appRouter.route(this.onDestroy());
   }
 }

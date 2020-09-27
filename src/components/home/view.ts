@@ -1,4 +1,4 @@
-import { timeLeftToString } from "../../shared/timeFormat";
+import { timeLeftToString } from "../../shared/utils/timeFormat";
 class View {
   render(state, el) {
     const { timeLeft, totalScore, wordForScreen, startButtonStatus } = state;

@@ -1,4 +1,4 @@
-import { Clock } from "../shared/model";
+import { Clock } from "../shared/models/Clock";
 
 const sleep = (seconds) =>
   new Promise((res) => setTimeout(() => res(), seconds * 1000));

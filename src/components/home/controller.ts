@@ -1,14 +1,12 @@
-import {
-  wordData,
-  gameScore,
-  WordItemQueue,
-  WordItem,
-} from "../../shared/model";
-import { timeLeftToString } from "../../shared/timeFormat";
-import { rInterval } from "../../shared/rInterval";
+import { timeLeftToString } from "../../shared/utils/timeFormat";
+import { rInterval } from "../../shared/utils/rInterval";
 import { INTERVAL_TIME, ENTER_KEY_CODE } from "../../shared/constant";
 import view from "./view";
 import appRouter from "../../appRouter";
+import { WordItem } from "../../shared/models/WordItem";
+import { WordItemQueue } from "../../shared/models/WordItemQueue";
+import { gameStat } from "../../shared/models/GameStat";
+import { wordData } from "../../shared/models/WordData";
 
 const initialViewStateFactory = (totalScore?: number) => ({
   timeLeft: void 0, // 남은 시간
@@ -36,7 +34,7 @@ class Controller {
 
   async init(el) {
     this.el = el;
-    this.viewState = initialViewStateFactory(gameScore.total);
+    this.viewState = initialViewStateFactory(gameStat.total);
     view.render(this.viewState, this.el);
     this.addEventDelegation();
   }
@@ -57,11 +55,11 @@ class Controller {
 
   private async setWordData() {
     this.wordQueue = new WordItemQueue(await this.getDataFn());
-    gameScore.setWordItems(this.wordQueue);
+    gameStat.setWordItems(this.wordQueue);
   }
 
-  private async goResult() {
-    window.history.pushState({}, "Mission Complete", `/complete`);
+  private goResult() {
+    window.history.pushState(void 0, "Mission Complete", `/complete`);
     appRouter.route(this.onDestroy());
   }
 
@@ -121,7 +119,7 @@ class Controller {
       this.goResult();
       return;
     }
-    this.viewState.totalScore = gameScore.total;
+    this.viewState.totalScore = gameStat.total;
     this.currentWordItem = this.wordQueue.dequeue();
     const { text, second } = this.currentWordItem.value;
     this.viewState.wordForScreen = text;
@@ -137,7 +135,7 @@ class Controller {
     this.focusWordInput();
   }
 
-  private async updateTimeLeft() {
+  private updateTimeLeft() {
     if (!(this.currentWordItem instanceof WordItem)) return;
 
     if (this.currentWordItem.isExpired) {
@@ -175,7 +173,7 @@ class Controller {
   }
 
   private async resetGame() {
-    gameScore.clear();
+    gameStat.clear();
     this.viewState = initialViewStateFactory();
     this.internalInterval.clear();
     this.updateState();
