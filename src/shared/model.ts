@@ -2,10 +2,10 @@ import { API_URI } from './constant'
 
 export class Clock {
   end: number
-  constructor(private seconds: number) {
+  constructor(private second: number) {
     const now = new Date()
-    this.seconds = seconds
-    this.end = now.setSeconds(now.getSeconds() + seconds)
+    this.second = second
+    this.end = now.setSeconds(now.getSeconds() + second)
   }
 
   get timeLeft() {
@@ -13,7 +13,7 @@ export class Clock {
   }
 
   reset() {
-    this.end = this.seconds
+    this.end = this.second
   }
 }
 
@@ -30,7 +30,7 @@ export class WordItem {
   private second: number
   private isPassed: boolean | undefined
   private clockForLeftTime: Clock | undefined
-  private init: () => any
+  private init: () => void
 
   get isExpired() {
     return this._timeLeft < 0
