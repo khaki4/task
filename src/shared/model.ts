@@ -33,12 +33,12 @@ export class WordItem {
   private init: () => void
 
   get isExpired() {
-    return this._timeLeft < 0
+    return this.timeLeft < 0
   }
 
   get value() {
     return {
-      second: this._timeLeft,
+      second: this.timeLeft,
       text: this.text,
       timeConsumed: this.timeConsumed,
       isPassed: this.isPassed
@@ -49,7 +49,7 @@ export class WordItem {
     return this.second;
   }
 
-  get _timeLeft() {
+  private get timeLeft() {
     if (!this.clockForLeftTime) {
       return this.second
     }
@@ -72,7 +72,7 @@ export class WordItem {
 
   pass(isPass) {
     this.isPassed = isPass
-    this.timeConsumed = this.second - this._timeLeft;
+    this.timeConsumed = this.second - this.timeLeft;
   }
 
   reset() {
