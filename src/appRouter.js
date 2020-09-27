@@ -11,7 +11,7 @@ class AppRouter {
         completeController.init(document.querySelector("#root"))
         break
       default:
-        homeCtroller.init(document.querySelector("#root"))
+        location.href = '/';
     }
   }
 }
