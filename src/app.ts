@@ -1,8 +1,8 @@
-import appRouter from './appRouter';
+import appRouter from "./appRouter";
 
 class App {
   async init() {
-    appRouter.route(void 0)
+    appRouter.route(void 0);
   }
 }
 
