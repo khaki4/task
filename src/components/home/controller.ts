@@ -1,18 +1,18 @@
-import { timeLeftToString } from "../../shared/utils/timeFormat";
-import { rInterval } from "../../shared/utils/rInterval";
-import { INTERVAL_TIME, ENTER_KEY_CODE } from "../../shared/constant";
-import view from "./view";
-import appRouter from "../../appRouter";
-import { WordItem } from "../../shared/models/WordItem";
-import { WordItemQueue } from "../../shared/models/WordItemQueue";
-import { gameStatService } from "../../shared/services/GameStat.service";
-import { wordDataService } from "../../shared/services/WordData.service";
+import { timeLeftToString } from '../../shared/utils/timeFormat';
+import { rInterval } from '../../shared/utils/rInterval';
+import { INTERVAL_TIME, ENTER_KEY_CODE } from '../../shared/constant';
+import view from './view';
+import appRouter from '../../appRouter';
+import { WordItem } from '../../shared/models/WordItem';
+import { WordItemQueue } from '../../shared/models/WordItemQueue';
+import { gameStatService } from '../../shared/services/GameStat.service';
+import { wordDataService } from '../../shared/services/WordData.service';
 
 const initialViewStateFactory = (totalScore?: number) => ({
   timeLeft: void 0, // 남은 시간
   totalScore, // 총 점수
-  wordForScreen: "문제 단어", // 입력 대상 단어
-  wordInput: "입력", // 입력된 단어
+  wordForScreen: '문제 단어', // 입력 대상 단어
+  wordInput: '입력', // 입력된 단어
   startButtonStatus: true,
 });
 
@@ -20,11 +20,11 @@ class Controller {
   viewState = initialViewStateFactory();
   el: HTMLElement;
 
-  private root = document.getElementById("root");
+  private root = document.getElementById('root');
   private eventInfos: () => [string, (event: Event) => void][] = () => [
-    ["click", this.clickHandler],
-    ["input", this.inputHandler],
-    ["keyup", this.keyUpHandler],
+    ['click', this.clickHandler],
+    ['input', this.inputHandler],
+    ['keyup', this.keyUpHandler],
   ];
   private wordQueue: WordItemQueue;
   private currentWordItem: WordItem | { value: null };
@@ -32,7 +32,7 @@ class Controller {
 
   constructor(private getDataFn) {}
 
-  async init(el) {
+  async init(el: HTMLElement) {
     this.el = el;
     this.viewState = initialViewStateFactory(gameStatService.total);
     view.render(this.viewState, this.el);
@@ -59,16 +59,16 @@ class Controller {
   }
 
   private async goResult() {
-    window.history.pushState(void 0, "Mission Complete", `/complete`);
+    window.history.pushState(void 0, 'Mission Complete', '/complete');
     appRouter.route(this.onDestroy());
   }
 
-  private clickHandler = (event) => {
-    switch (event.target.id) {
-      case "start":
+  private clickHandler = (event: MouseEvent) => {
+    switch ((event.target as HTMLElement).id) {
+      case 'start':
         this.startGame();
         break;
-      case "reset":
+      case 'reset':
         this.resetGame();
         break;
       default:
@@ -76,11 +76,11 @@ class Controller {
     }
   };
 
-  private inputHandler = (event) => {
-    switch (event.target.id) {
-      case "wordInput":
-        this.viewState.wordInput = event.target.value;
-        const inputEl = <HTMLInputElement>document.getElementById("wordInput");
+  private inputHandler = (event: KeyboardEvent) => {
+    switch ((event.target as HTMLInputElement).id) {
+      case 'wordInput':
+        this.viewState.wordInput = (event.target as HTMLInputElement).value;
+        const inputEl = document.getElementById('wordInput') as HTMLInputElement;
         inputEl.value = this.viewState.wordInput;
         break;
       default:
@@ -88,9 +88,9 @@ class Controller {
     }
   };
 
-  private keyUpHandler = (event) => {
-    switch (event.target.id) {
-      case "wordInput":
+  private keyUpHandler = (event: KeyboardEvent) => {
+    switch ((event.target as HTMLInputElement).id) {
+      case 'wordInput':
         this.onSubmitWord(event);
         break;
       default:
@@ -111,7 +111,7 @@ class Controller {
   }
 
   private focusWordInput() {
-    document.getElementById("wordInput").focus();
+    document.getElementById('wordInput').focus();
   }
 
   private setNext() {
@@ -143,20 +143,20 @@ class Controller {
       this.setNext();
     } else {
       const { second } = this.currentWordItem.value;
-      const timeLeftEl: HTMLElement = document.querySelector(".time-left");
+      const timeLeftEl: HTMLElement = document.querySelector('.time-left');
       if (!timeLeftEl) return;
 
       timeLeftEl.innerText = timeLeftToString(second);
     }
   }
 
-  private async onSubmitWord(event) {
+  private async onSubmitWord(event: KeyboardEvent) {
     if (!(this.currentWordItem instanceof WordItem)) return;
 
     if (event.keyCode !== ENTER_KEY_CODE) return false;
     event.preventDefault();
 
-    const isCurrectWord = this.currentWordItem.compareWith(event.target.value);
+    const isCurrectWord = this.currentWordItem.compareWith((event.target as HTMLInputElement).value);
     this.currentWordItem.pass(isCurrectWord);
 
     if (isCurrectWord) {
@@ -167,7 +167,7 @@ class Controller {
   }
 
   private async clearWordItem() {
-    this.viewState.wordInput = "";
+    this.viewState.wordInput = '';
     const { second } = this.currentWordItem.value;
     this.viewState.timeLeft = second;
     this.updateState();
@@ -185,7 +185,7 @@ const controller = new Controller(wordDataService.get);
 export default controller;
 
 if (module.hot) {
-  module.hot.accept("./view", async () => {
+  module.hot.accept('./view', async () => {
     view.render(controller.viewState, controller.el);
   });
 }
