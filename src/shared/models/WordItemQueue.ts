@@ -1,4 +1,4 @@
-import { WordItem } from "./WordItem";
+import { WordItem } from './WordItem';
 
 export class WordItemQueue {
   private wordItems: WordItem[];
