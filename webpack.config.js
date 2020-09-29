@@ -18,7 +18,7 @@ module.exports = {
   devServer: {
     hot: true,
     overlay: true, // 빌드시 에러나 경고를 브라우져 화면에 표시한다.
-    contentBase: "./public",
+    contentBase: "./public", // 정적파일을 제공할 경로. 기본값은 웹팩 아웃풋
     inline: true,
     disableHostCheck: true,
     historyApiFallback: true

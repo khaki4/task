@@ -21,14 +21,14 @@ class Controller {
   el: HTMLElement;
 
   private root = document.getElementById('root');
+  private wordQueue: WordItemQueue;
+  private currentWordItem: WordItem | { value: null };
+  private internalInterval;
   private eventInfos: () => [string, (event: Event) => void][] = () => [
     ['click', this.clickHandler],
     ['input', this.inputHandler],
     ['keyup', this.keyUpHandler],
   ];
-  private wordQueue: WordItemQueue;
-  private currentWordItem: WordItem | { value: null };
-  private internalInterval;
 
   constructor(private getDataFn) {}
 
