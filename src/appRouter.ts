@@ -1,5 +1,5 @@
-import homeCtroller from "./components/home/controller";
-import completeController from "./components/complete/controller";
+import homeCtroller from "./pages/home/controller";
+import completeController from "./pages/complete/controller";
 
 class AppRouter {
   route(_) {
