@@ -1,8 +1,8 @@
-import view from "./view";
-import appRouter from "../../appRouter";
-import { gameStatService } from "../../shared/services/GameStat.service";
+import view from './view';
+import appRouter from '../../appRouter';
+import { gameStatService, GameStatService } from '../../shared/services/GameStat.service';
 
-const initialViewStateFactory = (gameStat) => ({
+const initialViewStateFactory = (gameStat: GameStatService) => ({
   totalScore: gameStat.total,
   consumedAverageTime: gameStat.consumedAverageTime,
 });
@@ -11,14 +11,12 @@ class Controller {
   viewState = initialViewStateFactory(gameStatService);
   el: HTMLElement;
 
-  private root = document.getElementById("root");
-  private eventInfos: () => [string, (event: MouseEvent) => void][] = () => [
-    ["click", this.clickHandler],
-  ];
+  private root = document.getElementById('root');
+  private eventInfos: () => [string, (event: MouseEvent) => void][] = () => [['click', this.clickHandler]];
 
   constructor() {}
 
-  async init(el) {
+  async init(el: HTMLElement) {
     if (!this.validPageToStart()) return;
 
     this.el = el;
@@ -35,7 +33,7 @@ class Controller {
     if (gameStatService.isFinished) {
       return true;
     } else {
-      window.location.href = "/";
+      window.location.href = '/';
       return false;
     }
   }
@@ -52,9 +50,9 @@ class Controller {
     });
   }
 
-  private clickHandler = (event) => {
-    switch (event.target.id) {
-      case "reStart":
+  private clickHandler = (event: MouseEvent) => {
+    switch ((event.target as HTMLElement).id) {
+      case 'reStart':
         this.reStartGame();
         break;
       default:
@@ -68,7 +66,7 @@ class Controller {
   }
 
   private async goHome() {
-    window.history.pushState(void 0, "Typing Game", `/`);
+    window.history.pushState(void 0, 'Typing Game', `/`);
     appRouter.route(this.onDestroy());
   }
 }
@@ -78,7 +76,7 @@ const controller = new Controller();
 export default controller;
 
 if (module.hot) {
-  module.hot.accept("./view", async () => {
+  module.hot.accept('./view', async () => {
     view.render(controller.viewState, controller.el);
   });
 }
