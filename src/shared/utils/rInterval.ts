@@ -1,4 +1,4 @@
-export const rInterval = (callback, delay) => {
+export const rInterval = (callback: () => void, delay: number) => {
   const dateNow = Date.now;
   const requestAnimation = window.requestAnimationFrame;
   let start = dateNow();

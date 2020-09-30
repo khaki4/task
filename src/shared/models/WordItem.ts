@@ -1,4 +1,4 @@
-import { Clock } from "./Clock";
+import { Clock } from './Clock';
 
 export class WordItem {
   private text: string;
@@ -42,7 +42,7 @@ export class WordItem {
     this.clockForLeftTime = new Clock(this.second);
   }
 
-  compareWith(inputWord = "") {
+  compareWith(inputWord = '') {
     return this.text === inputWord.trim();
   }
 

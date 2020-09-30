@@ -1,17 +1,17 @@
-import homeCtroller from "./pages/home/controller";
-import completeController from "./pages/complete/controller";
+import homeCtroller from './pages/home/controller';
+import completeController from './pages/complete/controller';
 
 class AppRouter {
-  route(_) {
+  route(_: Promise<void>) {
     switch (location.pathname.slice(1)) {
-      case "":
-        homeCtroller.init(document.querySelector("#root"));
+      case '':
+        homeCtroller.init(document.querySelector('#root'));
         break;
-      case "complete":
-        completeController.init(document.querySelector("#root"));
+      case 'complete':
+        completeController.init(document.querySelector('#root'));
         break;
       default:
-        location.href = "/";
+        location.href = '/';
     }
   }
 }

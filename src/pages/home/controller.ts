@@ -2,13 +2,14 @@ import { timeLeftToString } from '../../shared/utils/timeFormat';
 import { rInterval } from '../../shared/utils/rInterval';
 import { INTERVAL_TIME, ENTER_KEY_CODE } from '../../shared/constant';
 import view from './view';
+import { IViewState } from './types';
 import appRouter from '../../appRouter';
 import { WordItem } from '../../shared/models/WordItem';
 import { WordItemQueue } from '../../shared/models/WordItemQueue';
 import { gameStatService } from '../../shared/services/GameStat.service';
 import { wordDataService } from '../../shared/services/WordData.service';
 
-const initialViewStateFactory = (totalScore?: number) => ({
+const initialViewStateFactory = (totalScore?: number): IViewState => ({
   timeLeft: void 0, // 남은 시간
   totalScore, // 총 점수
   wordForScreen: '문제 단어', // 입력 대상 단어
@@ -17,7 +18,7 @@ const initialViewStateFactory = (totalScore?: number) => ({
 });
 
 class Controller {
-  viewState = initialViewStateFactory();
+  viewState: IViewState = initialViewStateFactory();
   el: HTMLElement;
 
   private root = document.getElementById('root');

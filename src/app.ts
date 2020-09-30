@@ -1,4 +1,4 @@
-import appRouter from "./appRouter";
+import appRouter from './appRouter';
 
 class App {
   async init() {

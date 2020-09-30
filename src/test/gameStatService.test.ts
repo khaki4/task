@@ -1,23 +1,22 @@
-import { WordItem } from "../shared/models/WordItem";
-import { WordItemQueue } from "../shared/models/WordItemQueue";
-import { gameStatService } from "../shared/services/GameStat.service";
+import { WordItem } from '../shared/models/WordItem';
+import { WordItemQueue } from '../shared/models/WordItemQueue';
+import { gameStatService } from '../shared/services/GameStat.service';
 
-const sleep = (seconds) =>
-  new Promise((res) => setTimeout(() => res(), seconds * 1000));
+const sleep = (seconds) => new Promise((res) => setTimeout(() => res(), seconds * 1000));
 
-describe("GameScore 에서", () => {
-  test("올바른 총 점수를 구해야 한다.", () => {
+describe('GameScore 에서', () => {
+  test('올바른 총 점수를 구해야 한다.', () => {
     const wordData = [
-      { text: "hello", second: 10 },
-      { text: "world", second: 11 },
+      { text: 'hello', second: 10 },
+      { text: 'world', second: 11 },
     ];
     const wordItemQueue = new WordItemQueue(wordData);
     gameStatService.setWordItems(wordItemQueue);
     expect(gameStatService.total).toEqual(0);
   });
 
-  describe("올바른 평균 답변시간을 구해야 한다.", () => {
-    test("빈 리스트 일 경우", () => {
+  describe('올바른 평균 답변시간을 구해야 한다.', () => {
+    test('빈 리스트 일 경우', () => {
       const wordData = [];
       const wordItemQueue = new WordItemQueue(wordData);
       gameStatService.setWordItems(wordItemQueue);
@@ -31,10 +30,10 @@ describe("GameScore 에서", () => {
       expect(gameStatService.consumedAverageTime).toEqual(void 0);
     });
 
-    test("모두 성공했을 경우", async () => {
+    test('모두 성공했을 경우', async () => {
       const wordData = [
-        { text: "hello", second: 10 },
-        { text: "world", second: 11 },
+        { text: 'hello', second: 10 },
+        { text: 'world', second: 11 },
       ];
       const wordItemQueue = new WordItemQueue(wordData);
       gameStatService.setWordItems(wordItemQueue);
@@ -49,10 +48,10 @@ describe("GameScore 에서", () => {
       expect(gameStatService.consumedAverageTime).toBeGreaterThan(1);
     });
 
-    test("모두 실패", () => {
+    test('모두 실패', () => {
       const wordData = [
-        { text: "hello", second: 10 },
-        { text: "world", second: 11 },
+        { text: 'hello', second: 10 },
+        { text: 'world', second: 11 },
       ];
       const wordItemQueue = new WordItemQueue(wordData);
       gameStatService.setWordItems(wordItemQueue);
@@ -66,10 +65,10 @@ describe("GameScore 에서", () => {
       expect(gameStatService.consumedAverageTime).toEqual(void 0);
     });
 
-    test("몇 개만 성공했을 경우", async () => {
+    test('몇 개만 성공했을 경우', async () => {
       const wordData = [
-        { text: "hello", second: 10 },
-        { text: "world", second: 11 },
+        { text: 'hello', second: 10 },
+        { text: 'world', second: 11 },
       ];
       const wordItemQueue = new WordItemQueue(wordData);
       gameStatService.setWordItems(wordItemQueue);
@@ -83,10 +82,10 @@ describe("GameScore 에서", () => {
     });
   });
 
-  test("clear() 이후 점수가 0으로 되어야 한다.", () => {
+  test('clear() 이후 점수가 0으로 되어야 한다.', () => {
     const wordData = [
-      { text: "hello", second: 10 },
-      { text: "world", second: 11 },
+      { text: 'hello', second: 10 },
+      { text: 'world', second: 11 },
     ];
     const wordItemQueue = new WordItemQueue(wordData);
     gameStatService.setWordItems(wordItemQueue);
@@ -106,10 +105,10 @@ describe("GameScore 에서", () => {
     expect(gameStatService.total).toEqual(-1);
   });
 
-  test("game이 종료됐는지 판단할 수 있어야 한다.", () => {
+  test('game이 종료됐는지 판단할 수 있어야 한다.', () => {
     const wordData = [
-      { text: "hello", second: 10 },
-      { text: "world", second: 11 },
+      { text: 'hello', second: 10 },
+      { text: 'world', second: 11 },
     ];
     const wordItemQueue = new WordItemQueue(wordData);
     gameStatService.setWordItems(wordItemQueue);

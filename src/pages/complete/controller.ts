@@ -1,14 +1,15 @@
 import view from './view';
+import { IViewState } from './types';
 import appRouter from '../../appRouter';
 import { gameStatService, GameStatService } from '../../shared/services/GameStat.service';
 
-const initialViewStateFactory = (gameStat: GameStatService) => ({
+const initialViewStateFactory = (gameStat: GameStatService): IViewState => ({
   totalScore: gameStat.total,
   consumedAverageTime: gameStat.consumedAverageTime,
 });
 
 class Controller {
-  viewState = initialViewStateFactory(gameStatService);
+  viewState: IViewState = initialViewStateFactory(gameStatService);
   el: HTMLElement;
 
   private root = document.getElementById('root');

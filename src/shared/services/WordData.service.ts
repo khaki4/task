@@ -1,4 +1,4 @@
-import { API_URI } from "../constant";
+import { API_URI } from '../constant';
 
 export class WordDataService {
   async get() {

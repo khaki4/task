@@ -1,6 +1,7 @@
-import { timeLeftToString } from "../../shared/utils/timeFormat";
+import { IViewState } from './types';
+import { timeLeftToString } from '../../shared/utils/timeFormat';
 class View {
-  render(state, el) {
+  render(state: IViewState, el: HTMLElement) {
     const { timeLeft, totalScore, wordForScreen, startButtonStatus } = state;
     el.innerHTML = `
       <div id="home">
@@ -11,11 +12,7 @@ class View {
         <div class="word-screen"><span>${wordForScreen}</span></div>
         <input id="wordInput" type="text" placeholder="단어입력" />
         <div>
-            ${
-              startButtonStatus
-                ? '<button type="button" id="start">시작</button>'
-                : '<button type="button" id="reset">초기화</button>'
-            }
+            ${startButtonStatus ? '<button type="button" id="start">시작</button>' : '<button type="button" id="reset">초기화</button>'}
         </div>
       </div>
     `;

@@ -1,4 +1,4 @@
-import { WordItemQueue } from "../models/WordItemQueue";
+import { WordItemQueue } from '../models/WordItemQueue';
 
 export class GameStatService {
   private wordItemQueue: WordItemQueue;
@@ -15,9 +15,7 @@ export class GameStatService {
   }
 
   get consumedAverageTime() {
-    const sucessList = this.wordItemQueue.list.filter(
-      (item) => item.value.isPassed
-    );
+    const sucessList = this.wordItemQueue.list.filter((item) => item.value.isPassed);
 
     if (sucessList.length === 0) return void 0;
 
